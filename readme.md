@@ -5,9 +5,9 @@
 
 
 ### /users/:userId/transactions 
-  -- Transactions by userId based on given filters
+  -- Transactions by User based on given filters
 
 
 
 ### /transactions 
-  -- All Transactions by userId based on given filters
+  -- All Transactions based on given filters with User Details
