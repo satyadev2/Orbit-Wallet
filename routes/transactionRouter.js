@@ -9,6 +9,8 @@ transactionRouter.post('/transactions/:userId', async (req, res) => {
     const { status, type, fromDate, toDate } = req.body; 
     const userId = req.params.userId; 
 
+
+
     try {
         
         const pipeline = [
@@ -19,6 +21,7 @@ transactionRouter.post('/transactions/:userId', async (req, res) => {
             },
             {
                 $lookup: {
+                    from: 'transactions',
                     localField: '_id',
                     foreignField: 'userId',
                     as: 'transactionsByUser',
@@ -39,7 +42,6 @@ transactionRouter.post('/transactions/:userId', async (req, res) => {
                 }
             }
         ];
-
         // Execute aggregation query
         const result = await UserModel.aggregate(pipeline);
 
@@ -53,7 +55,9 @@ transactionRouter.post('/transactions/:userId', async (req, res) => {
 
 transactionRouter.post('/transactions', async (req, res) => {
     const { status, type, fromDate, toDate } = req.body;
+    const page = parseInt(req.query.page) || 1;
 
+    const limit = 5;
     try {
         const pipeline = [
             {
@@ -83,7 +87,9 @@ transactionRouter.post('/transactions', async (req, res) => {
                     foreignField: "_id", 
                     as: "All Transaction Entries"
                 }
-            }
+            },
+            { $skip: (parseInt(page) - 1) * parseInt(limit) },
+            { $limit: parseInt(limit) } 
         ]
 
         
