@@ -42,10 +42,9 @@ transactionRouter.post('/transactions/:userId', async (req, res) => {
                 }
             }
         ];
-        // Execute aggregation query
+      
         const result = await UserModel.aggregate(pipeline);
 
-        // Send response
         res.status(200).json(result);
     } catch (err) {
         console.error(err);
